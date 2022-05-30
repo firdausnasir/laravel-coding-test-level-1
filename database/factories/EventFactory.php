@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Event;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,10 +20,14 @@ class EventFactory extends Factory
      */
     public function definition()
     {
+        $start_date = CarbonImmutable::instance($this->faker->dateTimeBetween('-1 months', '+1 months'));
+
         return [
-            'id'   => $this->faker->uuid,
-            'name' => $this->faker->name,
-            'slug' => $this->faker->slug
+            'id'      => $this->faker->uuid,
+            'name'    => $this->faker->name,
+            'slug'    => $this->faker->unique()->slug,
+            'startAt' => $start_date,
+            'endAt'   => $start_date->addDays(random_int(0, 14)),
         ];
     }
 }

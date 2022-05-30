@@ -34,6 +34,9 @@ class Event extends Model
     // custom column for soft delete
     const DELETED_AT = 'deletedAt';
 
+    // to return id as uuid
+    public $incrementing = false;
+
     // disable auto update timestamp
     public $timestamps = false;
 

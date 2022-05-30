@@ -17,6 +17,8 @@ return new class extends Migration
             $table->uuid('id')->primary()->unique();
             $table->string('name');
             $table->string('slug')->unique();
+            $table->timestamp('startAt');
+            $table->timestamp('endAt');
             $table->dateTime('createdAt')->useCurrent();
             $table->dateTime('updatedAt')->useCurrentOnUpdate();
             $table->timestamp('deletedAt')->nullable();

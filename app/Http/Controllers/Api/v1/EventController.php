@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEventRequest;
 use App\Models\Event;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class EventController extends Controller
@@ -31,7 +30,7 @@ class EventController extends Controller
     public function activeEvents(): JsonResponse
     {
         $active_events = Event::query()
-            ->whereRaw("? BETWEEN createdAt AND updatedAt", [now()->toDateTimeString()])
+            ->whereRaw("? BETWEEN startAt AND endAt", [now()->toDateTimeString()])
             ->get();
 
         return response()->json($active_events, Response::HTTP_OK);
