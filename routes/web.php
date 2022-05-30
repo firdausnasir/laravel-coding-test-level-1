@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/events/{id}/undelete', [\App\Http\Controllers\EventController::class, 'undelete'])->name('events.undelete');
+Route::resource('/events', \App\Http\Controllers\EventController::class);
+
+require __DIR__.'/auth.php';

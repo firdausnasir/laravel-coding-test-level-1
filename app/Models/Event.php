@@ -41,7 +41,7 @@ class Event extends Model
     public $timestamps = false;
 
     // enable mass assignments
-    protected $guarded = ['name', 'slug'];
+    protected $guarded = ['id'];
 
     protected static function boot()
     {

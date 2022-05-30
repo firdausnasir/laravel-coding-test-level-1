@@ -57,7 +57,6 @@ class EventController extends Controller
      */
     public function show(Event $event): JsonResponse
     {
-
         return response()->json($event, Response::HTTP_OK);
     }
 
