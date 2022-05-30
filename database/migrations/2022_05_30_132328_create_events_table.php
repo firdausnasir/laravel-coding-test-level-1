@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->dateTime('createdAt')->useCurrent();
             $table->dateTime('updatedAt')->useCurrentOnUpdate();
+            $table->timestamp('deletedAt')->nullable();
         });
     }
 
