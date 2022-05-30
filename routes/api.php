@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\v1\EventController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::group(['prefix' => 'v1'], function () {
-    Route::apiResource('events', \App\Http\Controllers\EventController::class);
+    Route::group(['prefix' => 'events'], function () {
+        Route::get('/', [EventController::class, 'index']);
+        Route::get('/{id}', [EventController::class, 'show']);
+        Route::post('/', [EventController::class, 'store']);
+        Route::match(['put', 'patch'], '/{id}', [EventController::class, 'update']);
+        Route::delete('/{id}', [EventController::class, 'destroy']);
+        Route::get('active-events', [EventController::class, 'active']);
+    });
 });
 
 
