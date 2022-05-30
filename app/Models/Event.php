@@ -37,6 +37,9 @@ class Event extends Model
     // disable auto update timestamp
     public $timestamps = false;
 
+    // enable mass assignments
+    protected $guarded = ['name', 'slug'];
+
     protected static function boot()
     {
         parent::boot();

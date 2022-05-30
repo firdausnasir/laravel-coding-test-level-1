@@ -16,7 +16,7 @@ class EventController extends Controller
      *
      * @return JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $events = Event::all();
 
@@ -28,7 +28,7 @@ class EventController extends Controller
      *
      * @return JsonResponse
      */
-    public function active()
+    public function activeEvents(): JsonResponse
     {
         $active_events = Event::query()
             ->whereRaw("? BETWEEN createdAt AND updatedAt", [now()->toDateTimeString()])
@@ -43,7 +43,7 @@ class EventController extends Controller
      * @param StoreEventRequest $request
      * @return JsonResponse
      */
-    public function store(StoreEventRequest $request)
+    public function store(StoreEventRequest $request): JsonResponse
     {
         $event = Event::create($request->validated());
 
@@ -53,14 +53,11 @@ class EventController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Event $event
      * @return JsonResponse
      */
-    public function show($id)
+    public function show(Event $event): JsonResponse
     {
-        $event = Event::query()
-            ->where('id', $id)
-            ->firstOrFail();
 
         return response()->json($event, Response::HTTP_OK);
     }
@@ -69,13 +66,13 @@ class EventController extends Controller
      * Update the specified resource in storage.
      *
      * @param StoreEventRequest $request
-     * @param int $id
+     * @param string $uuid
      * @return JsonResponse
      */
-    public function update(StoreEventRequest $request, $id)
+    public function update(StoreEventRequest $request, string $uuid): JsonResponse
     {
         $event = Event::firstOrCreate([
-            'id' => $id
+            'id' => $uuid
         ], $request->validated());
 
         return response()->json($event, Response::HTTP_OK);
@@ -84,12 +81,12 @@ class EventController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Event $event
      * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Event $event): JsonResponse
     {
-        Event::whereId($id)->delete();
+        $event->delete();
 
         return response()->json([], Response::HTTP_NO_CONTENT);
     }

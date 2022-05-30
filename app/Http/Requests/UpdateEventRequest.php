@@ -24,8 +24,8 @@ class UpdateEventRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['string'],
-            'slug' => ['string', 'unique:events,slug']
+            'name' => ['required', 'string'],
+            'slug' => ['required', 'string', 'unique:events,slug']
         ];
     }
 }

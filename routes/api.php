@@ -15,14 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::group(['prefix' => 'v1'], function () {
-    Route::group(['prefix' => 'events'], function () {
-        Route::get('/', [EventController::class, 'index']);
-        Route::get('/{id}', [EventController::class, 'show']);
-        Route::post('/', [EventController::class, 'store']);
-        Route::match(['put', 'patch'], '/{id}', [EventController::class, 'update']);
-        Route::delete('/{id}', [EventController::class, 'destroy']);
-        Route::get('active-events', [EventController::class, 'active']);
+    Route::prefix('events')->group(function () {
+        Route::get('/active-events', [EventController::class, 'activeEvents'])->name('events.active-events');
     });
+    Route::apiResource('events', EventController::class);
 });
 
 
