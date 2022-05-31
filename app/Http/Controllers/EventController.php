@@ -4,14 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEventRequest;
 use App\Models\Event;
+use App\Services\EventCRUDService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class EventController extends Controller
 {
@@ -21,22 +19,10 @@ class EventController extends Controller
      */
     public function index(Request $request): Factory | View | Application
     {
-        $search = $request->get('q');
+        $search   = $request->get('q');
+        $paginate = 5;
 
-        $events = Event::query()
-            ->withTrashed()
-            ->when(
-                $search,
-                fn(Builder $query) => (
-                    $query->where(function (Builder $secondQuery) use ($search) {
-                        $secondQuery->where('id', 'like', "%$search%")
-                        ->orWhere('name', 'like', "%$search%")
-                        ->orWhere('slug', 'like', "%$search%");
-                    })
-                )
-            )
-            ->paginate(3)
-            ->withQueryString();
+        $events = EventCRUDService::indexWithPagination($search, $paginate);
 
         return view('events.index', compact('events'));
     }
@@ -58,7 +44,7 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request): RedirectResponse
     {
-        $event = Event::create($request->validated());
+        $event = EventCRUDService::store($request->validated());
 
         return redirect()->route('events.show', $event);
     }
@@ -91,11 +77,9 @@ class EventController extends Controller
      */
     public function update(StoreEventRequest $request, string $uuid): RedirectResponse
     {
-        Event::updateOrCreate([
-            'id' => $uuid
-        ], $request->validated());
+        $event = EventCRUDService::update($uuid, $request->validated());
 
-        return redirect()->route('events.index');
+        return redirect()->route('events.show', $event);
     }
 
     /**
@@ -103,10 +87,11 @@ class EventController extends Controller
      *
      * @param Event $event
      * @return RedirectResponse
+     * @throws \Throwable
      */
     public function destroy(Event $event): RedirectResponse
     {
-        $event->delete();
+        EventCRUDService::delete($event);
 
         return redirect()->route('events.index');
     }
