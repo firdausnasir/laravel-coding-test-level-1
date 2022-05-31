@@ -7,6 +7,17 @@ Installing
 
 * Replace database credentials in .env file;
 
+* Replace mail keys in .env file with mailtrap.io key;
+
+    ```bash
+    MAIL_MAILER=smtp
+    MAIL_HOST=smtp.mailtrap.io
+    MAIL_PORT=2525
+    MAIL_USERNAME=123
+    MAIL_PASSWORD=123
+    MAIL_ENCRYPTION=tls
+    ```
+
 * Run composer and yarn to install all the dependencies required;
 
     ```bash
