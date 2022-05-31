@@ -1,5 +1,8 @@
 # Laravel Live Coding Test
 
+## Installation
+See [Installing](installing.md) section in documentation.
+
 ## Follow this steps
 
 #### Application Setup (DO THIS FIRST)
