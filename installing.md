@@ -34,3 +34,8 @@ Installing
     Email: test@example.com
     Password: laravel-test
     ```
+
+* Event endpoint
+    ```
+    /events
+    ```
