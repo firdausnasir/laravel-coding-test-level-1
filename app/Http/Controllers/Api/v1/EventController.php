@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEventRequest;
 use App\Models\Event;
+use App\Services\EventCRUDService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class EventController extends Controller
@@ -13,11 +15,18 @@ class EventController extends Controller
     /**
      * Display a listing of all events.
      *
+     * @param Request $request
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $events = Event::all();
+        $search       = $request->get('q');
+        $use_paginate = $request->boolean('paginate');
+        $paginate     = 5;
+
+        $events = $use_paginate
+            ? EventCRUDService::indexWithPagination($search, $paginate)
+            : EventCRUDService::index();
 
         return response()->json($events, Response::HTTP_OK);
     }
@@ -29,9 +38,7 @@ class EventController extends Controller
      */
     public function activeEvents(): JsonResponse
     {
-        $active_events = Event::query()
-            ->whereRaw("? BETWEEN startAt AND endAt", [now()->toDateTimeString()])
-            ->get();
+        $active_events = EventCRUDService::activeEvents();
 
         return response()->json($active_events, Response::HTTP_OK);
     }
@@ -44,7 +51,7 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request): JsonResponse
     {
-        $event = Event::create($request->validated());
+        $event = EventCRUDService::store($request->validated());
 
         return response()->json($event, Response::HTTP_CREATED);
     }
@@ -57,7 +64,6 @@ class EventController extends Controller
      */
     public function show(Event $event): JsonResponse
     {
-
         return response()->json($event, Response::HTTP_OK);
     }
 
@@ -70,9 +76,7 @@ class EventController extends Controller
      */
     public function update(StoreEventRequest $request, string $uuid): JsonResponse
     {
-        $event = Event::firstOrCreate([
-            'id' => $uuid
-        ], $request->validated());
+        $event = EventCRUDService::update($uuid, $request->validated());
 
         return response()->json($event, Response::HTTP_OK);
     }
@@ -85,7 +89,7 @@ class EventController extends Controller
      */
     public function destroy(Event $event): JsonResponse
     {
-        $event->delete();
+        EventCRUDService::delete($event);
 
         return response()->json([], Response::HTTP_NO_CONTENT);
     }

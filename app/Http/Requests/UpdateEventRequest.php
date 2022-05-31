@@ -25,7 +25,9 @@ class UpdateEventRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'slug' => ['required', 'string', 'unique:events,slug']
+            'slug' => ['required', 'string', 'unique:events,slug'],
+            'startAt' => ['date'],
+            'endAt'   => ['date'],
         ];
     }
 }
