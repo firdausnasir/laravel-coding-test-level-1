@@ -15,6 +15,6 @@ class EventSeeder extends Seeder
      */
     public function run()
     {
-        Event::factory()->count(5)->create();
+        Event::factory()->count(5)->createQuietly();
     }
 }
