@@ -35,7 +35,7 @@
                         </button>
                     </x-slot>
 
-                    @if(Auth::check())
+                    @auth
                         <x-slot name="content">
                             <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}">
@@ -89,7 +89,7 @@
 
             <div class="mt-3 space-y-1">
                 <!-- Authentication -->
-                @if(Auth::check())
+                @auth
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
 
