@@ -23,11 +23,13 @@ class EventFactory extends Factory
         $start_date = CarbonImmutable::instance($this->faker->dateTimeBetween('-1 months', '+1 months'));
 
         return [
-            'id'      => $this->faker->uuid,
-            'name'    => $this->faker->name,
-            'slug'    => $this->faker->unique()->slug,
-            'startAt' => $start_date,
-            'endAt'   => $start_date->addDays(random_int(0, 14)),
+            'id'        => $this->faker->uuid,
+            'name'      => $this->faker->name,
+            'slug'      => $this->faker->unique()->slug,
+            'startAt'   => $start_date,
+            'endAt'     => $start_date->addDays(random_int(0, 14)),
+            'createdAt' => now()->toDateTimeString(),
+            'updatedAt' => now()->toDateTimeString(),
         ];
     }
 }

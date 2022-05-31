@@ -20,4 +20,6 @@ Route::get('/', function () {
 Route::post('/events/{id}/undelete', [\App\Http\Controllers\EventController::class, 'undelete'])->name('events.undelete');
 Route::resource('/events', \App\Http\Controllers\EventController::class);
 
+Route::get('fetch', \App\Http\Controllers\ExternalApiController::class)->name('fetch.external-api');
+
 require __DIR__.'/auth.php';

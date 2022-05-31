@@ -13,7 +13,7 @@ class UpdateEventRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return \Auth::check();
     }
 
     /**
@@ -24,8 +24,8 @@ class UpdateEventRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string'],
-            'slug' => ['required', 'string', 'unique:events,slug'],
+            'name'    => ['required', 'string'],
+            'slug'    => ['required', 'string', 'unique:events,slug'],
             'startAt' => ['date'],
             'endAt'   => ['date'],
         ];
