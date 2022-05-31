@@ -39,3 +39,8 @@ Installing
     ```
     /events
     ```
+
+* Fetch api endpoint
+    ```
+    /fetch
+    ```
